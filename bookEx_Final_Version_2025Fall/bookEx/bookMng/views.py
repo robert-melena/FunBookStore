@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 
@@ -153,3 +153,7 @@ def about(request):
     return render(request, "bookMng/aboutus.html", {
         "item_list": MainMenu.objects.all()
     })
+def home_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('mybooks')  # or whatever your home page is
+    return redirect('login')

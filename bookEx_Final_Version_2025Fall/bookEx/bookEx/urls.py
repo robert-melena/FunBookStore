@@ -25,9 +25,12 @@ from bookMng.views import Register
 
 from bookMng import views
 
+from bookMng.views import home_redirect
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('',home_redirect,name="home"),
     path('', include('bookMng.urls')),
     path('register/success', TemplateView.as_view(template_name="registration/register_success.html"),
          name='register-success'),

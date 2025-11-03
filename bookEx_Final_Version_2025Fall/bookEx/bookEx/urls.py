@@ -23,6 +23,9 @@ from django.urls import include
 from django.views.generic.base import TemplateView
 from bookMng.views import Register
 
+from bookMng import views
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('bookMng.urls')),
@@ -31,5 +34,7 @@ urlpatterns = [
     path('register', Register.as_view(), name='register'),
     path('', include('django.contrib.auth.urls')),
     path("", include(("bookMng.urls", "bookMng"), namespace="bookMng")),
+    path("aboutus/", views.about, name="about"),
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

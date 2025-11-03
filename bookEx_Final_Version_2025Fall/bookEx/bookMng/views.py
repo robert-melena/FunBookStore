@@ -148,3 +148,8 @@ def remove_ownership(request, book_id):
     PurchasedBook.objects.filter(user=request.user, book_id=book_id).delete()
 
     return JsonResponse({"success": True})
+
+def about(request):
+    return render(request, "bookMng/aboutus.html", {
+        "item_list": MainMenu.objects.all()
+    })

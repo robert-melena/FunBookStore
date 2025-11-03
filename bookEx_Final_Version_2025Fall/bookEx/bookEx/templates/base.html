@@ -13,64 +13,86 @@
 
 </head>
 
+<script>
+function toggleSearch() {
+    const input = document.querySelector(".search-input");
+    const form = document.getElementById("searchForm");
+
+    form.style.display = "block";
+    setTimeout(() => input.classList.add("show"), 10);
+    input.focus();
+}
+
+function hideSearch() {
+    const input = document.querySelector(".search-input");
+    const form = document.getElementById("searchForm");
+
+    input.classList.remove("show");
+    setTimeout(() => form.style.display = "none", 200);
+}
+</script>
+
+
 <body>
 
 {% block nave %}
 <!-- ✅ TOP NAVIGATION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
-  <div class="container-fluid">
+  <div class="container">
 
-    <!-- Logo / Home Link -->
+    <!-- Brand -->
     <a class="navbar-brand fw-bold" href="/displaybooks">📚 Fun Book Store</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <!-- Toggle (mobile) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navMenu">
+    <!-- Menu -->
+    <div class="collapse navbar-collapse" id="navbarMenu">
 
+      <!-- Left Links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-        <li class="nav-item">
-          <a class="nav-link" href="/displaybooks">Recommendations</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="/mybooks">My Library</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="/postbook">Post Book</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="/aboutus">About</a>
-        </li>
-
+        <li class="nav-item"><a class="nav-link" href="/displaybooks">Recommendations</a></li>
+        <li class="nav-item"><a class="nav-link" href="/mybooks">My Library</a></li>
+        <li class="nav-item"><a class="nav-link" href="/postbook">Post Book</a></li>
+        <li class="nav-item"><a class="nav-link" href="/aboutus">About</a></li>
       </ul>
 
-      <!-- Right Side: Search + User -->
+      <!-- Search & User -->
       <ul class="navbar-nav ms-auto">
 
-        <li class="nav-item me-3">
-          <a class="nav-link" href="#"><i class="bi bi-search"></i></a>
+        <!-- Search -->
+        <li class="nav-item d-flex align-items-center">
+          <div class="search-container">
+            <i class="bi bi-search search-icon" onclick="toggleSearch()"></i>
+
+            <form id="searchForm" class="search-input-form" action="/search" method="get">
+              <input type="text" name="q" class="search-input" placeholder="Search books..."
+                     onblur="hideSearch()" />
+            </form>
+          </div>
         </li>
 
-        <li class="nav-item dropdown">
+        <!-- User Menu -->
+        <li class="nav-item dropdown ms-3">
           {% if user.is_authenticated %}
-            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">{{ user.username }}</a>
+            <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown">
+              {{ user.username }}
+            </a>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/mybooks">My Library</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                  <form method="post" action="{% url 'logout' %}?next=/">
-                    {% csrf_token %}
-                    <button class="dropdown-item" type="submit">Logout</button>
-                  </form>
-                </li>
+              <li><a class="dropdown-item" href="/mybooks">My Library</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <form method="post" action="{% url 'logout' %}?next=/">
+                  {% csrf_token %}
+                  <button class="dropdown-item" type="submit">Logout</button>
+                </form>
+              </li>
             </ul>
           {% else %}
-            <a class="btn btn-outline-primary btn-sm" href="{% url 'login' %}?next=/">Login</a>
+            <a class="btn btn-outline-primary btn-sm" href="/login?next=/">Login</a>
           {% endif %}
         </li>
 
@@ -79,6 +101,7 @@
     </div>
   </div>
 </nav>
+
 {% endblock nave %}
 <!-- ✅ CONTENT AREA -->
 <main class="flex-grow-1 container py-4">

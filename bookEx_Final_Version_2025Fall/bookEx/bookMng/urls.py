@@ -18,6 +18,8 @@ urlpatterns = [
     path("purchases/", views_cart.my_books, name="purchases"),
     path("book-info/<int:book_id>/", views.book_info, name="book_info"),
     path("remove-book/<int:book_id>/", views.remove_ownership, name="remove_ownership"),
+    path("search/", views.search_books, name="search_books"),
+
 
 
 

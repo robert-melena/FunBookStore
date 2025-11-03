@@ -157,3 +157,21 @@ def home_redirect(request):
     if request.user.is_authenticated:
         return redirect('mybooks')  # or whatever your home page is
     return redirect('login')
+
+from django.db.models import Q
+
+def search_books(request):
+    query = request.GET.get("q", "")
+    results = []
+
+    if query:
+        results = Book.objects.filter(
+            Q(name__icontains=query) |
+            Q(author__icontains=query)
+        ).distinct()
+
+    return render(request, "bookMng/search_results.html", {
+        "query": query,
+        "results": results,
+        "item_list": MainMenu.objects.all()
+    })
